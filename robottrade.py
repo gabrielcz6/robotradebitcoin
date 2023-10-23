@@ -1,3 +1,4 @@
+# Importar librerias, Estas bibliotecas se utilizan para diversas tareas, como la recopilación de datos, el análisis y la visualización.
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -19,7 +20,9 @@ from IPython.display import clear_output
 # Definir variables globales
 df_bitcoin, precio_actual, tendencia, media_bitcoin,variacion, algoritmo_decision=pd.DataFrame(),None,None,None,None,None
 
-#iniciando driver selenium, deberas tener actualizado el chrome a la ultima versión, y el chromedriver tambien
+# Iniciando driver selenium, deberas tener actualizado el chrome a la ultima versión, y el chromedriver tambien
+# Se configura Selenium para abrir una instancia de Google Chrome en modo headless para que el navegador se 
+# ejecute en segundo plano y no abra ventanas visibles.
 chrome_options = ChromeOptions()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-extensions")
@@ -30,7 +33,8 @@ chrome_options.add_argument("--silent")
 chrome_options.add_argument("--log-level=3")
 driver = webdriver.Chrome(service=Service('chromedriver.exe'), options=chrome_options)
 
-
+# Esta función se utiliza para extrare datos históricos de Bitcoin desde Yahoo Finance y almacenarlos en un 
+# DataFrame llamado df_bitcoin
 def importar_base_bitcoin():
     #definir variables globales y symbol para la consulta a yahoo finance
     global df_bitcoin,precio_actual, tendencia, media_bitcoin, algoritmo_decision
@@ -45,7 +49,8 @@ def importar_base_bitcoin():
     #guardar en un dataframe llamado df_bitcoin
     df_bitcoin = pd.DataFrame(data)
 
-    
+# En esta función se utiliza Selenium para acceder al sitio web coinmarketcap.com y extraer el precio actual de 
+# Bitcoin, su tendencia y variación. Estos datos se almacenan en las variables precio_actual, tendencia y variación.    
 def extraer_tendencias():
     #definir variables globales
     global df_bitcoin, precio_actual, tendencia, media_bitcoin, algoritmo_decision
@@ -76,7 +81,10 @@ def extraer_tendencias():
     #visualizamos valores en consola     
     print(f"Precio actual: {precio_actual}, Variación: {variacion}, Tendencia: {tendencia}")
 
-
+# Esta función realiza operaciones de limpieza y filtrado en los datos históricos de Bitcoin. Elimina valores 
+# duplicados, valores nulos en la columna "Close" y filtra registros con volumen mayor a 0. Luego, calcula los 
+# cuartiles Q1 y Q3, filtra los registros dentro de ese rango y calcula el precio promedio, que se almacena en 
+# media_bitcoin.
 def limpieza_datos():
     #definir variables globales
     global df_bitcoin, precio_actual, tendencia, media_bitcoin, algoritmo_decision
@@ -120,7 +128,8 @@ def limpieza_datos():
     media_bitcoin = df_bitcoin_limpio['Close'].mean()
     print("Precio promedio: ", media_bitcoin)
     
-
+# Esta función utiliza el precio actual, la tendencia, la variación y la media del precio de Bitcoin para tomar 
+# decisiones de inversión. Puede decidir Comprar, Vender, o Esperar según se cumpla las condiciones.
 def tomar_decisiones():
     #definimos variables globales
     global df_bitcoin, precio_actual, tendencia, media_bitcoin, algoritmo_decision
@@ -144,6 +153,8 @@ def tomar_decisiones():
         algoritmo_decision = 'Esperar'
     print(algoritmo_decision)
 
+# En esta función, se crea un gráfico que muestra el precio de Bitcoin a lo largo del tiempo, junto con la media 
+# del precio. También se muestra la decisión de inversión en el gráfico.
 def visualizacion():
    #definimos variables globales
    global df_bitcoin, precio_actual, tendencia, media_bitcoin, algoritmo_decision
@@ -178,7 +189,9 @@ plt.ion()
 plt.figure(figsize=(16, 5))
 
 
-#llamamos a todas las funciones con un delay de 300 segundos!!!
+# Llamamos a todas las funciones con un delay de 300 segundos!!!
+# Esto permite que el script actualice y muestre los datos periódicamente cada 5 minutos.
+# El código tiene una estructura try...except que maneja excepciones y muestra fallo en caso de un error.
 while(True):
   try:
    
@@ -190,5 +203,4 @@ while(True):
    visualizacion()
    time.sleep(300)
   except:
-      print("fallo")
- 
+   print("fallo")
