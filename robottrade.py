@@ -189,7 +189,7 @@ plt.ion()
 plt.figure(figsize=(16, 5))
 
 
-# Llamamos a todas las funciones con un delay de 300 segundos!!!
+# Llamamos a todas las funciones con un delay de 300 segundos!!!!
 # Esto permite que el script actualice y muestre los datos periódicamente cada 5 minutos.
 # El código tiene una estructura try...except que maneja excepciones y muestra fallo en caso de un error.
 while(True):
